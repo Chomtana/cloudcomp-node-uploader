@@ -8,7 +8,9 @@ app.use(express.raw({
 }));
 //app.use(multer({dest: './uploads/'}).single('file'))
 app.post('/upload', function (req, res) {
-	fs.writeSync(fs.openSync('./uploads/' + (req.query.name || Date.now()), 'w'), req.body);
+	let fd = fs.openSync('./uploads/' + (req.query.name || Date.now()), 'w');
+	fs.writeSync(fd, req.body);
+	fs.closeSync(fd);
 	res.sendStatus(200);
 })
 app.get('/read', function (req, res) {
