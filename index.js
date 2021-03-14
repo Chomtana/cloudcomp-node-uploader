@@ -8,8 +8,11 @@ app.use(express.raw({
 }));
 //app.use(multer({dest: './uploads/'}).single('file'))
 app.post('/upload', function (req, res) {
-	fs.writeSync(fs.openSync('./uploads/' + Date.now(), 'w'), req.body);
-	res.send("Success");
+	fs.writeSync(fs.openSync('./uploads/' + (req.query.name || Date.now()), 'w'), req.body);
+	res.sendStatus(200);
+})
+app.get('/read', function (req, res) {
+	res.send(fs.readFileSync('./uploads/' + req.query.name));
 })
 app.listen(80, function () {
 	  console.log('App running on port 80')
